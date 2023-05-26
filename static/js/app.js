@@ -1,40 +1,65 @@
-// Get the samples data endpoint
+// Define the URL for the data
+const url = "https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json";
 
-let url = "https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json"
+// Fetch the JSON data and create the chart
+d3.json(url)
+  .then(data => {
+    // Extract necessary data from the JSON
+    const samples = data.samples;
+    const ids = samples[0].otu_ids.slice(0, 10).reverse();
+    const values = samples[0].sample_values.slice(0, 10).reverse();
+    const labels = samples[0].otu_labels.slice(0, 10).reverse();
 
-// Fetch the JSON data and console log it to test
+    // Create the dropdown menu
+    const dropdown = d3.select('#selDataset');
+    dropdown.selectAll('option')
+      .data(samples)
+      .enter()
+      .append('option')
+      .attr('value', d => d.id)
+      .text(d => d.id);
 
-let d3Output1 = d3.json(url).then((data) => console.log(data));
+    // Function to handle dropdown change event
+    function optionChanged(selectedId) {
+      // Find the selected sample
+      const selectedSample = samples.find(sample => sample.id === selectedId);
 
-// Sort the data by Greek search results descending
-let sortedData= data.sort((a, b) => b.sample_values - a.sample_values);
+      // Update the chart data
+      const updatedIds = selectedSample.otu_ids.slice(0, 10).reverse();
+      const updatedValues = selectedSample.sample_values.slice(0, 10).reverse();
+      const updatedLabels = selectedSample.otu_labels.slice(0, 10).reverse();
 
-// Slice the first 10 objects for plotting
-slicedData = sortedData.slice(0, 10);
-
-// Reverse the array to accommodate Plotly's defaults
-reversedData = slicedData.reverse();
-
-// Trace1 for Data
-let trace1 = {
-  x: reversedData.map(object => object.sample_values),
-  y: reversedData.map(object => object.otu_ids ),
-  type: "bar",
-  orientation: "h"
-};
-
-
-// Apply a title to the layout
-let layout = {
-    title: "Top 10 OTUs ",
-    margin: {
-      l: 100,
-      r: 100,
-      t: 100,
-      b: 100
+      // Update the chart
+      updateChart(updatedIds, updatedValues, updatedLabels);
     }
-  };
-  
-  // Render the plot to the div tag with id "plot"
-  // Note that we use `traceData` here, not `data`
-  Plotly.newPlot("plot", traceData, layout);
+
+    // Call the function to initialize the chart with the first sample
+    optionChanged(samples[0].id);
+
+    // Function to update the chart
+    function updateChart(ids, values, labels) {
+      const trace = {
+        x: values,
+        y: ids.map(id => `OTU ${id}`),
+        text: labels,
+        type: 'bar',
+        orientation: 'h'
+      };
+
+      const layout = {
+        title: 'Top 10 OTUs',
+        xaxis: { title: 'Sample Values' },
+        yaxis: { title: 'OTU IDs' }
+      };
+
+      const data = [trace];
+
+      Plotly.newPlot('bar', data, layout);
+    }
+
+    // Event listener for dropdown change
+    dropdown.on('change', function () {
+      const selectedId = d3.select(this).property('value');
+      optionChanged(selectedId);
+    });
+  })
