@@ -1,7 +1,7 @@
 // URL for the data
 let url = "https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json";
 
-// Grab the data that you want
+// Grab the data that I want for the first using d3.json() to grab the data from the URL
 const samples = d3.json(url).then(data => data.samples);
 const ids = d3.json(url).then(data => data.samples[0].otu_ids.slice(0, 10).reverse());
 const values = d3.json(url).then(data => data.samples[0].sample_values.slice(0, 10).reverse());
@@ -13,13 +13,13 @@ console.log("Ids", ids);
 console.log("Values", values);
 console.log("Labels", labels);
 
-// Grab the JSON data in order to initialize the chart
+// Grab the JSON data in order to setup the chart
 d3.json(url)
   .then(data => {
     // Extract necessary data from the JSON
     const samples = data.samples;
 
-    // Create the dropdown menu
+    // Create the dropdown menu 
     const dropdown = d3.select('#selDataset');
     dropdown.selectAll('option')
       .data(samples)
