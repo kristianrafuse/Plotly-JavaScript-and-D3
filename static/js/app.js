@@ -47,6 +47,7 @@ d3.json(url)
       // Update the chart
       updateChart(updatedIds, updatedValues, updatedLabels);
       updateBubbleChart(updatedIds, updatedValues, updatedLabels);
+      
       // Update the sample metadata
       updateSampleMetadata(selectedId);
     }
@@ -109,11 +110,13 @@ function updateSampleMetadata(selectedId) {
   let metadataPanel = d3.select("#sample-metadata");
   let selectedMetadata = metadata.find(item => item.id === parseInt(selectedId));
 
-Object.entries(selectedMetadata).forEach(([key, value]) => {metadataPanel.append("p").text(`${key}: ${value}`);});}
+// Display the selected sample metadata
+Object.entries(selectedMetadata).forEach(([key, value]) => {
+  metadataPanel.append("p")
+  .text(`${key}: ${value}`);});}
 
     // Event listener for dropdown change
     dropdown.on('change', function () {
-      const selectedId = d3.select(this).property('value');
-      optionChanged(selectedId);
-    });
-  });
+      const selectedId = d3.select(this)
+      .property('value')
+      ;optionChanged(selectedId);});});
