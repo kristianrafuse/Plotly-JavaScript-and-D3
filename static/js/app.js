@@ -70,14 +70,18 @@ d3.json(url)
         orientation: 'h',
         marker: {
           color: ids.slice(0, 10),
-          colorscale: 'Greens'
+          colorscale: 'Greens',
+          line: {
+            color: 'rgb(8,48,107)',
+            width: 0.25
+          }
         }
       };
 
       let layout = {
         title: 'Top 10 OTUs',
-        xaxis: { title: 'Sample Values' },
-        yaxis: { title: 'OTU IDs' }
+        xaxis: {title:'Sample Values'},
+        yaxis: {title:'OTU IDs', zeroline: true, gridwidth: 1}
       };
 
       let data = [trace];
@@ -97,13 +101,17 @@ function updateBubbleChart(ids, values, labels) {
       size: values,
       color: ids,
       colorscale: 'Greens',
+      line: {
+        color: 'rgb(8,48,107)',
+        width: 0.25
+      }
     }
   };
 
   let layout = {
     title: 'OTUs Observed',
     xaxis: { title: 'OTU IDs' },
-    yaxis: { title: 'Sample Values' }
+    yaxis: { title: 'Sample Values', zeroline: true}
   };
 
   let data = [trace];
@@ -119,10 +127,10 @@ function updateGauge(washingFrequency) {
       value: washingFrequency,
       title: {text: "Belly Button Washing Frequency", font:{ size: 17}},
       gauge: {
-        axis: { range: [0, 9], tickwidth: 4, tickcolor: "grey" },
+        axis: { range: [0, 9], tickwidth: 1, tickcolor: "grey" },
         bar: { color: "rgba(100, 200, 100, 0.5"},
         bgcolor: "white",
-        borderwidth: 2,
+        borderwidth: 1,
         bordercolor: "gray",
         steps: [
           { range: [0, 1], color: "rgba(1, 100, 1, 0.15)"},
@@ -136,7 +144,7 @@ function updateGauge(washingFrequency) {
           { range: [8, 9], color: "rgba(9, 100, 9, 0.95)"},
         ],
         threshold: {
-          line: { color: "red", width: 4 },
+          line: { color: "grey", width: 1 },
           thickness: 0.75,
           value: washingFrequency,
         },
