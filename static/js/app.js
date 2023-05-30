@@ -20,8 +20,7 @@ d3.json(url)
     let samples = data.samples;
     let metadata = data.metadata;
 
-    // Print the data to check
-    console.log("Metadata>", metadata)
+    console.log("Metadata", metadata)
 
     // Create the dropdown menu using the data-binding approach, options are appended based on the samples data array.
     // Each option is assigned a value and displayed as text.
@@ -45,14 +44,14 @@ d3.json(url)
       let updatedValues = selectedSample.sample_values.slice(0, 10).reverse();
       let updatedLabels = selectedSample.otu_labels.slice(0, 10).reverse();
 
-      // Update the charts
+      // Update the chart
       updateChart(updatedIds, updatedValues, updatedLabels);
-
       updateBubbleChart(updatedIds, updatedValues, updatedLabels);
       
       // Update the sample metadata
       updateSampleMetadata(selectedId);
     }
+  
     // Call the function to initialize the chart with the first sample
     optionChanged(samples[0].id);
 
