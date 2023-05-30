@@ -107,7 +107,7 @@ function updateBubbleChart(ids, values, labels) {
 
 function updateSampleMetadata(selectedId) {
   let metadataPanel = d3.select("#sample-metadata");
-  let selectedMetadata = metadata.find(item => item.id === selectedId);
+  let selectedMetadata = metadata.find(item => item.id === parseInt(selectedId));
 
 Object.entries(selectedMetadata).forEach(([key, value]) => {metadataPanel.append("p").text(`${key}: ${value}`);});}
 
