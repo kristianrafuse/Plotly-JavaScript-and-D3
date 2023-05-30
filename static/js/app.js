@@ -70,7 +70,7 @@ d3.json(url)
         orientation: 'h',
         marker: {
           color: ids.slice(0, 10),
-          colorscale: 'Earth'
+          colorscale: 'Greens'
         }
       };
 
@@ -96,7 +96,7 @@ function updateBubbleChart(ids, values, labels) {
     marker: {
       size: values,
       color: ids,
-      colorscale: 'Earth',
+      colorscale: 'Greens',
     }
   };
 
@@ -117,7 +117,7 @@ function updateGauge(washingFrequency) {
       type: "indicator",
       mode: "gauge+number",
       value: washingFrequency,
-      title: { text: "Belly Button Washing Frequency", font: { size: 17 } },
+      title: {text: "Belly Button Washing Frequency", font:{ size: 17}},
       gauge: {
         axis: { range: [0, 9], tickwidth: 4, tickcolor: "grey" },
         bar: { color: "rgba(100, 200, 100, 0.5"},
@@ -125,13 +125,22 @@ function updateGauge(washingFrequency) {
         borderwidth: 2,
         bordercolor: "gray",
         steps: [
-          { range: [0, 1], color: "rgba(0, 255, 0, 0.1)" },
+          { range: [0, 1], color: "rgba(1, 100, 1, 0.15)"},
+          { range: [1, 2], color: "rgba(2, 100, 2, 0.25)"},
+          { range: [2, 3], color: "rgba(3, 100, 3, 0.35)"},
+          { range: [3, 4], color: "rgba(4, 100, 4, 0.45)"},
+          { range: [4, 5], color: "rgba(5, 100, 5, 0.55)"},
+          { range: [5, 6], color: "rgba(6, 100, 6, 0.65)"},
+          { range: [6, 7], color: "rgba(7, 100, 7, 0.75)"},
+          { range: [7, 8], color: "rgba(8, 100, 8, 0.85)"},
+          { range: [8, 9], color: "rgba(9, 100, 9, 0.95)"},
         ],
         threshold: {
-          line: { color: "rgba(100, 225, 100, 0.6", width: 2 },
+          line: { color: "red", width: 4 },
           thickness: 0.75,
           value: washingFrequency,
         },
+  
       },
     },
   ];
