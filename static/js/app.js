@@ -2,12 +2,10 @@
 let url = "https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json";
 
 // Grab the data that I want for the first using d3.json() to grab the data from the URL
-const samples = d3.json(url).then(data => data.samples);
-const ids = d3.json(url).then(data => data.samples[0].otu_ids.slice(0, 10).reverse());
-const values = d3.json(url).then(data => data.samples[0].sample_values.slice(0, 10).reverse());
-const labels = d3.json(url).then(data => data.samples[0].otu_labels.slice(0, 10).reverse());
-
-
+let samples = d3.json(url).then(data => data.samples);
+let ids = d3.json(url).then(data => data.samples[0].otu_ids.slice(0, 10).reverse());
+let values = d3.json(url).then(data => data.samples[0].sample_values.slice(0, 10).reverse());
+let labels = d3.json(url).then(data => data.samples[0].otu_labels.slice(0, 10).reverse());
 
 // Print the data to check
 console.log("Samples", samples);
@@ -21,6 +19,9 @@ d3.json(url)
     // Extract necessary data and metadata from the JSON
     let samples = data.samples;
     let metadata = data.metadata;
+
+    // Print the data to check
+    console.log("Metadata>", metadata)
 
     // Create the dropdown menu using the data-binding approach, options are appended based on the samples data array.
     // Each option is assigned a value and displayed as text.
@@ -44,14 +45,14 @@ d3.json(url)
       let updatedValues = selectedSample.sample_values.slice(0, 10).reverse();
       let updatedLabels = selectedSample.otu_labels.slice(0, 10).reverse();
 
-      // Update the chart
+      // Update the charts
       updateChart(updatedIds, updatedValues, updatedLabels);
+
       updateBubbleChart(updatedIds, updatedValues, updatedLabels);
       
       // Update the sample metadata
       updateSampleMetadata(selectedId);
     }
-
     // Call the function to initialize the chart with the first sample
     optionChanged(samples[0].id);
 
@@ -111,12 +112,21 @@ function updateSampleMetadata(selectedId) {
   let selectedMetadata = metadata.find(item => item.id === parseInt(selectedId));
 
 // Display the selected sample metadata
+// Referred to ChatGPT for this line below, as my demographics just keep adding more. This clears the previous data in the panel 
+// before populating it with the code below.
+
+metadataPanel.html("");
+
 Object.entries(selectedMetadata).forEach(([key, value]) => {
   metadataPanel.append("p")
-  .text(`${key}: ${value}`);});}
+  .text(`${key}: ${value}`);
+})
+  ;}
 
     // Event listener for dropdown change
     dropdown.on('change', function () {
       const selectedId = d3.select(this)
       .property('value')
-      ;optionChanged(selectedId);});});
+      ;optionChanged(selectedId);
+    });
+  });
