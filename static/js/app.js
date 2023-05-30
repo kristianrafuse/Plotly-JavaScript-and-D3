@@ -18,13 +18,14 @@ console.log("Labels", labels);
 // Grab the JSON data in order to setup the chart
 d3.json(url)
   .then(data => {
-    // Extract necessary data from the JSON
-    const samples = data.samples;
+    // Extract necessary data and metadata from the JSON
+    let samples = data.samples;
+    let metadata = data.metadata;
 
     // Create the dropdown menu using the data-binding approach, options are appended based on the samples data array.
     // Each option is assigned a value and displayed as text.
 
-    const dropdown = d3.select('#selDataset');
+    let dropdown = d3.select('#selDataset');
     dropdown.selectAll('option')
       .data(samples)
       .enter()
@@ -36,16 +37,18 @@ d3.json(url)
       function optionChanged(selectedId){
       
         // Find the selected sample
-      const selectedSample = samples.find(sample => sample.id === selectedId);
+      let selectedSample = samples.find(sample => sample.id === selectedId);
 
       // Update the chart data
-      const updatedIds = selectedSample.otu_ids.slice(0, 10).reverse();
-      const updatedValues = selectedSample.sample_values.slice(0, 10).reverse();
-      const updatedLabels = selectedSample.otu_labels.slice(0, 10).reverse();
+      let updatedIds = selectedSample.otu_ids.slice(0, 10).reverse();
+      let updatedValues = selectedSample.sample_values.slice(0, 10).reverse();
+      let updatedLabels = selectedSample.otu_labels.slice(0, 10).reverse();
 
       // Update the chart
       updateChart(updatedIds, updatedValues, updatedLabels);
       updateBubbleChart(updatedIds, updatedValues, updatedLabels);
+      // Update the sample metadata
+      updateSampleMetadata(selectedId);
     }
 
     // Call the function to initialize the chart with the first sample
@@ -53,7 +56,7 @@ d3.json(url)
 
     // Function to update the chart // 'marker, color, colorscale' code comes from ChatGPT
     function updateChart(ids, values, labels) {
-      const trace = {
+      let trace = {
         x: values,
         y: ids.map(id => `OTU ${id}`),
         text: labels,
@@ -65,13 +68,13 @@ d3.json(url)
         }
       };
 
-      const layout = {
+      let layout = {
         title: 'Top 10 OTUs',
         xaxis: { title: 'Sample Values' },
         yaxis: { title: 'OTU IDs' }
       };
 
-      const data = [trace];
+      let data = [trace];
 
       Plotly.newPlot('bar', data, layout);
     }
@@ -79,7 +82,7 @@ d3.json(url)
 // Setting up the creation of a bubble chart on div ID bubble
 
 function updateBubbleChart(ids, values, labels) {
-  const trace = {
+  let trace = {
     x: ids,
     y: values,
     text: labels,
@@ -91,16 +94,22 @@ function updateBubbleChart(ids, values, labels) {
     }
   };
 
-  const layout = {
+  let layout = {
     title: 'OTUs Observed',
     xaxis: { title: 'OTU IDs' },
     yaxis: { title: 'Sample Values' }
   };
 
-  const data = [trace];
+  let data = [trace];
 
   Plotly.newPlot('bubble', data, layout);
 }
+
+function updateSampleMetadata(selectedId) {
+  let metadataPanel = d3.select("#sample-metadata");
+  let selectedMetadata = metadata.find(item => item.id === selectedId);
+
+Object.entries(selectedMetadata).forEach(([key, value]) => {metadataPanel.append("p").text(`${key}: ${value}`);});}
 
     // Event listener for dropdown change
     dropdown.on('change', function () {
