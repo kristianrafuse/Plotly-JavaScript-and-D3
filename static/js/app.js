@@ -117,13 +117,16 @@ function updateGauge(washingFrequency) {
       type: "indicator",
       mode: "gauge+number",
       value: washingFrequency,
-      title: { text: "Weekly Washing Frequency", font: { size: 17 } },
+      title: { text: "Belly Button Washing Frequency", font: { size: 17 } },
       gauge: {
         axis: { range: [0, 9], tickwidth: 4, tickcolor: "grey" },
         bar: { color: "rgba(100, 200, 100, 0.5"},
         bgcolor: "white",
         borderwidth: 2,
         bordercolor: "gray",
+        steps: [
+          { range: [0, 1], color: "rgba(0, 255, 0, 0.1)" },
+        ],
         threshold: {
           line: { color: "rgba(100, 225, 100, 0.6", width: 2 },
           thickness: 0.75,
