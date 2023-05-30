@@ -69,7 +69,7 @@ d3.json(url)
         type: 'bar',
         orientation: 'h',
         marker: {
-          color: ids.slice(0, 10).reverse(),
+          color: ids.slice(0, 10),
           colorscale: 'Earth'
         }
       };
@@ -120,12 +120,12 @@ function updateGauge(washingFrequency) {
       title: { text: "Weekly Washing Frequency", font: { size: 17 } },
       gauge: {
         axis: { range: [0, 9], tickwidth: 4, tickcolor: "grey" },
-        bar: { color: "brown" },
+        bar: { color: "rgba(100, 200, 100, 0.5"},
         bgcolor: "white",
-        borderwidth: 1,
+        borderwidth: 2,
         bordercolor: "gray",
         threshold: {
-          line: { color: "brown", width: 4 },
+          line: { color: "rgba(100, 225, 100, 0.6", width: 2 },
           thickness: 0.75,
           value: washingFrequency,
         },
