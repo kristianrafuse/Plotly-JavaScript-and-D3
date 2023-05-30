@@ -38,16 +38,21 @@ d3.json(url)
       
         // Find the selected sample
       let selectedSample = samples.find(sample => sample.id === selectedId);
+      let selectedMetadata = metadata.find(meta => meta.id === parseInt(selectedId));
 
       // Update the chart data
       let updatedIds = selectedSample.otu_ids.slice(0, 10).reverse();
       let updatedValues = selectedSample.sample_values.slice(0, 10).reverse();
       let updatedLabels = selectedSample.otu_labels.slice(0, 10).reverse();
+      let washingFrequency = selectedMetadata.wfreq;
 
-      // Update the chart
+      // Update the charts
       updateChart(updatedIds, updatedValues, updatedLabels);
       updateBubbleChart(updatedIds, updatedValues, updatedLabels);
       
+      // Update the gauge chart
+      updateGauge(washingFrequency);
+
       // Update the sample metadata
       updateSampleMetadata(selectedId);
     }
@@ -104,6 +109,36 @@ function updateBubbleChart(ids, values, labels) {
   let data = [trace];
 
   Plotly.newPlot('bubble', data, layout);
+}
+
+function updateGauge(washingFrequency) {
+  const data = [
+    {
+      type: "indicator",
+      mode: "gauge+number",
+      value: washingFrequency,
+      title: { text: "Weekly Washing Frequency", font: { size: 17 } },
+      gauge: {
+        axis: { range: [0, 9], tickwidth: 4, tickcolor: "grey" },
+        bar: { color: "brown" },
+        bgcolor: "white",
+        borderwidth: 1,
+        bordercolor: "gray",
+        threshold: {
+          line: { color: "brown", width: 4 },
+          thickness: 0.75,
+          value: washingFrequency,
+        },
+      },
+    },
+  ];
+  const layout = {
+    width: 400,
+    height: 300,
+    margin: { t: 54, r: 10, l: 10, b: 10 },
+  };
+
+  Plotly.newPlot('gauge', data, layout);
 }
 
 function updateSampleMetadata(selectedId) {
