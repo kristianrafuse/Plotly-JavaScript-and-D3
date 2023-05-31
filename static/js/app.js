@@ -79,7 +79,7 @@ d3.json(url)
       };
 
       let layout = {
-        title: 'Top 10 OTUs',
+        title: "<b>Top 10 OTUs</b><br><span style='font-size: 12px; color: gray;'>Microbes in the Human Navel</span>",
         xaxis: {title:'Sample Values'},
         yaxis: {title:'OTU IDs', zeroline: true, gridwidth: 1}
       };
@@ -109,7 +109,7 @@ function updateBubbleChart(ids, values, labels) {
   };
 
   let layout = {
-    title: 'OTUs Observed',
+    title: "<b>Top 10 OTUs</b><br><span style='font-size: 12px; color: gray;'>Microbes in the Human Navel</span>",
     xaxis: { title: 'OTU IDs' },
     yaxis: { title: 'Sample Values', zeroline: true}
   };
@@ -125,10 +125,10 @@ function updateGauge(washingFrequency) {
       type: "indicator",
       mode: "gauge+number",
       value: washingFrequency,
-      title: {text: "Belly Button Washing Frequency", font:{ size: 17}},
+      title: {text: "<b>Belly Button Washing Frequency</b><br><span style='font-size: 12px; color: gray;'>Weekly Washing Frequency</span>"},
       gauge: {
         axis: { range: [0, 9], tickwidth: 1, tickcolor: "grey" },
-        bar: { color: "rgba(100, 200, 100, 0.5"},
+        bar: { color: "rgba(100, 200, 100, 0.5)" },
         bgcolor: "white",
         borderwidth: 1,
         bordercolor: "gray",
