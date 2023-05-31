@@ -37,31 +37,32 @@ d3.json(url)
       function optionChanged(selectedId){
       
         // Find the selected sample
-      let selectedSample = samples.find(sample => sample.id === selectedId);
-      let selectedMetadata = metadata.find(meta => meta.id === parseInt(selectedId));
+        let selectedSample = samples.find(sample => sample.id === selectedId);
+        let selectedMetadata = metadata.find(meta => meta.id === parseInt(selectedId));
 
-      // Update the chart data
-      let updatedIds = selectedSample.otu_ids.slice(0, 10).reverse();
-      let updatedValues = selectedSample.sample_values.slice(0, 10).reverse();
-      let updatedLabels = selectedSample.otu_labels.slice(0, 10).reverse();
-      let washingFrequency = selectedMetadata.wfreq;
+        // Update the chart data
+        let updatedIds = selectedSample.otu_ids.slice(0, 10).reverse();
+        let updatedValues = selectedSample.sample_values.slice(0, 10).reverse();
+        let updatedLabels = selectedSample.otu_labels.slice(0, 10).reverse();
+        let washingFrequency = selectedMetadata.wfreq;
 
-      // Update the charts
-      updateChart(updatedIds, updatedValues, updatedLabels);
-      updateBubbleChart(updatedIds, updatedValues, updatedLabels);
+        // Update the charts
+        updateChart(updatedIds, updatedValues, updatedLabels);
+        updateBubbleChart(updatedIds, updatedValues, updatedLabels);
       
-      // Update the gauge chart
-      updateGauge(washingFrequency);
+        // Update the gauge chart
+        updateGauge(washingFrequency);
 
-      // Update the sample metadata
-      updateSampleMetadata(selectedId);
-    }
+        // Update the sample metadata
+        updateSampleMetadata(selectedId);
+      }
   
     // Call the function to initialize the chart with the first sample
     optionChanged(samples[0].id);
 
-    // Function to update the chart // 'marker, color, colorscale' code comes from ChatGPT
+    // Function to update the bar chart
     function updateChart(ids, values, labels) {
+      // Create the trace for the bar chart
       let trace = {
         x: values,
         y: ids.map(id => `OTU ${id}`),
@@ -86,99 +87,103 @@ d3.json(url)
 
       let data = [trace];
 
+      // Create and update the bar chart
       Plotly.newPlot('bar', data, layout);
     }
 
-// Setting up the creation of a bubble chart on div ID bubble
+    // Function to update the bubble chart
+    function updateBubbleChart(ids, values, labels) {
+      // Create the trace for the bubble chart
+      let trace = {
+        x: ids,
+        y: values,
+        text: labels,
+        mode: 'markers',
+        marker: {
+          size: values,
+          color: ids,
+          colorscale: 'Greens',
+          line: {
+            color: 'rgb(8,48,107)',
+            width: 0.25
+          }
+        }
+      };
 
-function updateBubbleChart(ids, values, labels) {
-  let trace = {
-    x: ids,
-    y: values,
-    text: labels,
-    mode: 'markers',
-    marker: {
-      size: values,
-      color: ids,
-      colorscale: 'Greens',
-      line: {
-        color: 'rgb(8,48,107)',
-        width: 0.25
-      }
+      let layout = {
+        title: "<b>Top 10 OTUs</b><br><span style='font-size: 12px; color: gray;'>Microbes in the Human Navel</span>",
+        xaxis: { title: 'OTU IDs' },
+        yaxis: { title: 'Sample Values', zeroline: true}
+      };
+
+      let data = [trace];
+
+      // Create and update the bubble chart
+      Plotly.newPlot('bubble', data, layout);
     }
-  };
 
-  let layout = {
-    title: "<b>Top 10 OTUs</b><br><span style='font-size: 12px; color: gray;'>Microbes in the Human Navel</span>",
-    xaxis: { title: 'OTU IDs' },
-    yaxis: { title: 'Sample Values', zeroline: true}
-  };
-
-  let data = [trace];
-
-  Plotly.newPlot('bubble', data, layout);
-}
-
-function updateGauge(washingFrequency) {
-  const data = [
-    {
-      type: "indicator",
-      mode: "gauge+number",
-      value: washingFrequency,
-      title: {text: "<b>Belly Button Washing Frequency</b><br><span style='font-size: 12px; color: gray;'>Weekly Washing Frequency</span>"},
-      gauge: {
-        axis: { range: [0, 9], tickwidth: 1, tickcolor: "grey" },
-        bar: { color: "rgba(100, 200, 100, 0.5)" },
-        bgcolor: "white",
-        borderwidth: 1,
-        bordercolor: "gray",
-        steps: [
-          { range: [0, 1], color: "rgba(1, 100, 1, 0.15)"},
-          { range: [1, 2], color: "rgba(2, 100, 2, 0.25)"},
-          { range: [2, 3], color: "rgba(3, 100, 3, 0.35)"},
-          { range: [3, 4], color: "rgba(4, 100, 4, 0.45)"},
-          { range: [4, 5], color: "rgba(5, 100, 5, 0.55)"},
-          { range: [5, 6], color: "rgba(6, 100, 6, 0.65)"},
-          { range: [6, 7], color: "rgba(7, 100, 7, 0.75)"},
-          { range: [7, 8], color: "rgba(8, 100, 8, 0.85)"},
-          { range: [8, 9], color: "rgba(9, 100, 9, 0.95)"},
-        ],
-        threshold: {
-          line: { color: "grey", width: 1 },
-          thickness: 0.75,
+    // Function to update the gauge chart
+    function updateGauge(washingFrequency) {
+      const data = [
+        {
+          type: "indicator",
+          mode: "gauge+number",
           value: washingFrequency,
+          title: {text: "<b>Belly Button Washing Frequency</b><br><span style='font-size: 12px; color: gray;'>Weekly Washing Frequency</span>"},
+          gauge: {
+            axis: { range: [0, 9], tickwidth: 1, tickcolor: "grey" },
+            bar: { color: "rgba(100, 200, 100, 0.5)" },
+            bgcolor: "white",
+            borderwidth: 1,
+            bordercolor: "gray",
+            steps: [
+              { range: [0, 1], color: "rgba(1, 100, 1, 0.15)"},
+              { range: [1, 2], color: "rgba(2, 100, 2, 0.25)"},
+              { range: [2, 3], color: "rgba(3, 100, 3, 0.35)"},
+              { range: [3, 4], color: "rgba(4, 100, 4, 0.45)"},
+              { range: [4, 5], color: "rgba(5, 100, 5, 0.55)"},
+              { range: [5, 6], color: "rgba(6, 100, 6, 0.65)"},
+              { range: [6, 7], color: "rgba(7, 100, 7, 0.75)"},
+              { range: [7, 8], color: "rgba(8, 100, 8, 0.85)"},
+              { range: [8, 9], color: "rgba(9, 100, 9, 0.95)"},
+            ],
+            threshold: {
+              line: { color: "grey", width: 1 },
+              thickness: 0.75,
+              value: washingFrequency,
+            },
+          },
         },
-      },
-    },
-  ];
-  const layout = {
-    width: 400,
-    height: 300,
-    margin: { t: 94, r: 20, l: 20, b: 10 },
-  };
+      ];
+      const layout = {
+        width: 400,
+        height: 300,
+        margin: { t: 94, r: 20, l: 20, b: 10 },
+      };
 
-  Plotly.newPlot('gauge', data, layout);
-}
-function updateSampleMetadata(selectedId) {
-  let metadataPanel = d3.select("#sample-metadata");
-  let selectedMetadata = metadata.find(item => item.id === parseInt(selectedId));
+      // Create and update the gauge chart
+      Plotly.newPlot('gauge', data, layout);
+    }
 
-// Display the selected sample metadata
-// Referred to ChatGPT for this line below, as my demographics just kept stacking one on top the other. This clears the previous data in the panel 
-// before populating it with the code below.
+    // Function to update the sample metadata
+    function updateSampleMetadata(selectedId) {
+      let metadataPanel = d3.select("#sample-metadata");
+      let selectedMetadata = metadata.find(item => item.id === parseInt(selectedId));
 
-metadataPanel.html("");
+      // Clear the previous data in the panel
+      metadataPanel.html("");
 
-Object.entries(selectedMetadata).forEach(([key, value]) => {
-  metadataPanel.append("p")
-  .text(`${key}: ${value}`);
-})
-  ;}
+      // Display the selected sample metadata
+      Object.entries(selectedMetadata).forEach(([key, value]) => {
+        metadataPanel.append("p")
+        .text(`${key}: ${value}`);
+      });
+    }
 
     // Event listener for dropdown change
     dropdown.on('change', function () {
       const selectedId = d3.select(this)
-      .property('value')
-      ;optionChanged(selectedId);
+      .property('value');
+      optionChanged(selectedId);
     });
   });
