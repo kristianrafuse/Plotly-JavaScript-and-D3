@@ -148,25 +148,23 @@ function updateGauge(washingFrequency) {
           thickness: 0.75,
           value: washingFrequency,
         },
-  
       },
     },
   ];
   const layout = {
     width: 400,
     height: 300,
-    margin: { t: 54, r: 10, l: 10, b: 10 },
+    margin: { t: 94, r: 20, l: 20, b: 10 },
   };
 
   Plotly.newPlot('gauge', data, layout);
 }
-
 function updateSampleMetadata(selectedId) {
   let metadataPanel = d3.select("#sample-metadata");
   let selectedMetadata = metadata.find(item => item.id === parseInt(selectedId));
 
 // Display the selected sample metadata
-// Referred to ChatGPT for this line below, as my demographics just keep adding more. This clears the previous data in the panel 
+// Referred to ChatGPT for this line below, as my demographics just kept stacking one on top the other. This clears the previous data in the panel 
 // before populating it with the code below.
 
 metadataPanel.html("");
