@@ -165,7 +165,10 @@ d3.json(url)
       Plotly.newPlot('gauge', data, layout);
     }
 
-    // Function to update the sample metadata
+    // Function to update the sample metadata by selecting the HTML element with the ID "sample-metadata" using the d3.select() function 
+    // and assigning it to the metadataPanel variable. Finds the metadata object that matches the selected ID by searching through 
+    // the metadata array and retrieving the object where the id property matches the selectedId
+
     function updateSampleMetadata(selectedId) {
       let metadataPanel = d3.select("#sample-metadata");
       let selectedMetadata = metadata.find(item => item.id === parseInt(selectedId));
@@ -173,7 +176,12 @@ d3.json(url)
       // Clear the previous data in the panel
       metadataPanel.html("");
 
-      // Display the selected sample metadata
+      // Display the selected sample metadata by iterating over the key-value pairs of the selectedMetadata object using the Object.entries() method.
+      // For each key-value pair, a new paragraph element is created (<p>) using the append() method of the metadataPanel selection. 
+      // The text content of the paragraph is set to ${key}: ${value}, where key represents the key of the current key-value pair 
+      // and value represents the corresponding value. This displays the metadata information in a readable format on the webpage.
+
+
       Object.entries(selectedMetadata).forEach(([key, value]) => {
         metadataPanel.append("p")
         .text(`${key}: ${value}`);
