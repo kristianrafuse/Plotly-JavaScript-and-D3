@@ -1,11 +1,20 @@
 // URL for the data
 let url = "https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json";
 
-// Grab the data that I want for the first using d3.json() to grab the data from the URL
+// Grab the data that I want for the first using d3.json() to grab the data from the URL I know I can chain all of this together...
+
+// Retrieve the 'samples' data from the JSON URL
 let samples = d3.json(url).then(data => data.samples);
+
+// Retrieve the first 10 OTU IDs per the requirements, in reverse order from the 'samples' data to setup for using with Plotly
 let ids = d3.json(url).then(data => data.samples[0].otu_ids.slice(0, 10).reverse());
+
+// Retrieve the first 10 sample values per the requirements, in reverse order from the 'samples' data
 let values = d3.json(url).then(data => data.samples[0].sample_values.slice(0, 10).reverse());
+
+// Retrieve the first 10 OTU labels per the requirements, in reverse order from the 'samples' data
 let labels = d3.json(url).then(data => data.samples[0].otu_labels.slice(0, 10).reverse());
+
 
 // Print the data to check
 console.log("Samples", samples);
@@ -40,7 +49,7 @@ d3.json(url)
         let selectedSample = samples.find(sample => sample.id === selectedId);
         let selectedMetadata = metadata.find(meta => meta.id === parseInt(selectedId));
 
-        // Update the chart data
+        // Update the chart data 
         let updatedIds = selectedSample.otu_ids.slice(0, 10).reverse();
         let updatedValues = selectedSample.sample_values.slice(0, 10).reverse();
         let updatedLabels = selectedSample.otu_labels.slice(0, 10).reverse();
@@ -91,9 +100,9 @@ d3.json(url)
       Plotly.newPlot('bar', data, layout);
     }
 
-    // Function to update the bubble chart
+    // Function to create and update the bubble chart
     function updateBubbleChart(ids, values, labels) {
-      // Create the trace for the bubble chart
+    // Create the trace for the bubble chart
       let trace = {
         x: ids,
         y: values,
@@ -122,7 +131,7 @@ d3.json(url)
       Plotly.newPlot('bubble', data, layout);
     }
 
-    // Function to update the gauge chart
+    // Function to create and update the gauge chart reconstucted from Plotly examples. 
     function updateGauge(washingFrequency) {
       const data = [
         {
