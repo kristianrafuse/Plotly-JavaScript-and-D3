@@ -6,4 +6,4 @@ https://stackoverflow.com/questions/11903709/adding-drop-down-menu-using-d3-js
 
 'metadataPanel.html("");' added from ChatGPT.
 
-I could not get the needle to work in the optional assignment
+I could not get the needle to work in the optional part of the assignment
