@@ -1,9 +1,3 @@
-# belly-button-challenge
-Module 14 Challenge
 
-Took some guidance on building the initial dropdown menu from:
-https://stackoverflow.com/questions/11903709/adding-drop-down-menu-using-d3-js 
 
-'metadataPanel.html("");' added from ChatGPT.
-
-I could not get the needle to work in the optional part of the assignment
+In this example, I use JavaScript to build an interactive dashboard to explore the Belly Button Biodiversity dataset which catalogues the microbes that colonize human navels.
